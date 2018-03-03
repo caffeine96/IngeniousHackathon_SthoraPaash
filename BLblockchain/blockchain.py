@@ -1,5 +1,10 @@
 import hashlib as hasher
 import datetime as date
+from flask import Flask
+from flask import request
+
+app = Flask(__name__)
+
 
 class BoL:
 	def __init__(self, containerType, quantity, weight, fromdate, todate, fromloc, toloc, price, description):
@@ -29,25 +34,24 @@ class Block:
 def create_genesis_block():  #Manually done
 	return Block(0,date.datetime.now(),"Genesis Block","0")
 
-def next_block(last_block):
+def next_block(last_block,data):
 	this_index = last_block.index + 1
 	this_timestamp = date.datetime.now()
-	this_data = "Hey! I'm block " + str(this_index)
+	this_data = data
 	this_hash = last_block.hash
 	return Block(this_index, this_timestamp, this_data, this_hash)
 
+@app.route('/txadd',methods=['POST'])
+def trans_add():
+	data = request.get_json()
+	block_to_add = next_block(previous_block,data)
+  	blockchain.append(block_to_add)
+  	previous_block = block_to_add
+  	print "Block #{} has been added to the blockchain!".format(block_to_add.index)
+  	print "Hash: {}\n".format(block_to_add.hash) 
+
 # Create the blockchain and add the genesis block
-blockchain = [create_genesis_block()]
-previous_block = blockchain[0]
-
-# How many blocks should we add to the chain
-# after the genesis block
-num_of_blocks_to_add = 20
-
-# Add blocks to the chain
-for i in range(0, num_of_blocks_to_add):
-  block_to_add = next_block(previous_block)
-  blockchain.append(block_to_add)
-  previous_block = block_to_add
-  print "Block #{} has been added to the blockchain!".format(block_to_add.index)
-  print "Hash: {}\n".format(block_to_add.hash) 
+if __name__ == "__main__":
+	blockchain = [create_genesis_block()]	
+	previous_block = blockchain[0]
+	app.run()
