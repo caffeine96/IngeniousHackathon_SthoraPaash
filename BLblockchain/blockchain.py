@@ -1,6 +1,18 @@
 import hashlib as hasher
 import datetime as date
 
+class BoL:
+	def __init__(self, containerType, quantity, weight, fromdate, todate, fromloc, toloc, price, description):
+		self.containerType = containerType
+		self.quantity = quantity
+		self.weight = weight
+		self.fromdate = fromdate
+		self.todate = todate
+		self.fromloc = fromloc
+		self.toloc = toloc
+		self.price = price
+		self.description = description
+
 class Block:
 	def __init__(self, index, timestamp, data, previous_hash):
 		self.index = index
