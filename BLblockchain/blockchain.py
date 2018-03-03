@@ -5,6 +5,7 @@ from flask import request
 
 app = Flask(__name__)
 
+previous_block=""
 
 class BoL:
 	def __init__(self, containerType, quantity, weight, fromdate, todate, fromloc, toloc, price, description):
@@ -43,15 +44,18 @@ def next_block(last_block,data):
 
 @app.route('/txadd',methods=['POST'])
 def trans_add():
+	global previous_block
 	data = request.get_json()
 	block_to_add = next_block(previous_block,data)
   	blockchain.append(block_to_add)
   	previous_block = block_to_add
   	print "Block #{} has been added to the blockchain!".format(block_to_add.index)
-  	print "Hash: {}\n".format(block_to_add.hash) 
+  	print "Hash: {}\n".format(block_to_add.hash)
+  	print "Data: {}\n".format(block_to_add.data)
+  	return "Block created" 
 
 # Create the blockchain and add the genesis block
 if __name__ == "__main__":
 	blockchain = [create_genesis_block()]	
 	previous_block = blockchain[0]
-	app.run()
+	app.run(host='0.0.0.0',port=5006)
