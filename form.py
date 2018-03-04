@@ -19,10 +19,11 @@ def add_data(d):
 	temp.append(d['destination_Country'])
 	temp.append(d['destination_Port'])
 	filename="logcomp1.csv"
-	with open(filename, 'a') as f:
-		writer = csv.writer(f)
-		writer.writerow(temp)
-
+	df=pd.read_csv(filename)
+	print fields
+	df2=pd.DataFrame([fields],columns=['ID','Container_type','Price','Cargo ready from','Cargo ready to','pickup_Country','pickup_Port','destination_Country','destination_Port'])
+	df=df.append(df2,ignore_index=True)
+	df.to_csv("logComp1.csv")
 
 
 @app.route('/result',methods = ['POST', 'GET'])
