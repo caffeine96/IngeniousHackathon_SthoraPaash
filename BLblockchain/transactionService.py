@@ -5,7 +5,7 @@ import json
 
 node = Flask(__name__)
 
-state={"logcomp1":100,"logcomp2":100,"logcomp3":100,"carrier1":100}
+state={"logComp1":100,"logComp2":100,"logComp3":100,"carrier1":100}
 
 node_transactions=[]
 url="http://localhost:5006/txadd"
